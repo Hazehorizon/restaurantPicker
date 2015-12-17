@@ -1,5 +1,5 @@
 # Restaurant Picker Service
-A standalone sevice that provides REST API for Restaurant Voting application (url)
+A standalone sevice that provides REST API for Restaurant Voting application. See https://gist.github.com/juozapas/f20b55e4568d7f5c63b1 for the details
 
 ## Building & Running the service locally
 
@@ -10,7 +10,7 @@ A standalone sevice that provides REST API for Restaurant Voting application (ur
 ### Get soures
   To ckeckout the sources from GitHub run the command:
 
-  git clone (url)
+  git clone https://github.com/Hazehorizon/restaurantPicker.git
 
 ### Building java code & packaging
   To build the application, run
