@@ -11,23 +11,28 @@ A standalone sevice that provides REST API for Restaurant Voting application. Se
 
 ### Get soures
   To checkout the sources from GitHub run the command:
+
   git clone https://github.com/Hazehorizon/restaurantPicker.git
 
   You can also just download the sources archive from github
 
 ### Building java code & packaging
   To build the application, run
+
   gradlew build
 
 ### Start integration tests
   To start all the integration tests, run
+
   gradlew integrationTest
 
 ### Run the appilcation
   To build and run it for a kick-off without integration tests starting, use command
+
   gradlew bootRun
 
   If you have already built the sources with gradlew build command, just run
+
   java -jar build/libs/restaurantPicker-1.0.jar
 
   After startup the application listens to 8080 port for HTTP requests
@@ -38,7 +43,7 @@ A standalone sevice that provides REST API for Restaurant Voting application. Se
   If you corrupt the database, e.g. remove all the users and can do nothing because of it, just restart the application, all the predefined records will be restored during startup
 
 ### User management API
-  This part is restricted for 'SYSTEM' role only. Use basic authentication to provide the credentials
+  This part is restricted for 'SYSTEM' role only. Use basic authentication to provide the credentials.
   There is a predefined user ("system"/"system") for these operations
 
 #### List all users 
@@ -59,11 +64,12 @@ A standalone sevice that provides REST API for Restaurant Voting application. Se
 
 #### Delete user
   Url pattern: /api/v1/system/user/{login}
+
   Example: curl -XDELETE -H "Content-type: application/json" -u "system:system" http://localhost:8080/api/v1/system/user/admin
 
 ### Retaurant management API
-  This part is available for 'ADMIN' role only. Use basic authentication to provide the credentials
-  There is a predefined user ("admin"/"admin") for these operations
+  This part is available for 'ADMIN' role only. Use basic authentication to provide the credentials.
+  There is a predefined user ("admin"/"admin") for these operations.
   There is a test restaurant with id='1' is also provided, it is active and has a today menu
 
 #### List all restaurants
@@ -71,6 +77,7 @@ A standalone sevice that provides REST API for Restaurant Voting application. Se
 
 #### Read the restaurant information
   Url pattern: /api/v1/settings/restaurant/{restaurantId}
+
   Example: curl -XGET -H "Content-type: application/json" -u "admin:admin" http://localhost:8080/api/v1/settings/restaurant/1
 
 #### Create a new restaurant
@@ -78,21 +85,25 @@ A standalone sevice that provides REST API for Restaurant Voting application. Se
 
 #### Update an existed restaurant
   Url pattern: /api/v1/settings/restaurant/{restaurantId}
+
   Example: curl -XPUT -H "Content-type: application/json" -u "admin:admin" -d "{\"name\":\"TEST\", \"description\":\"DESC\", \"address\": \"Park ave.\", \"phone\":\"767-67-65\"}" http://localhost:8080/api/v1/settings/restaurant/1
 
 #### Delete restaurant
-  The restaurant record won't be removed from db competely after the operation, just deactivated. This is the way to have all the voting history
-  Only active restaurants can be voted
+  The restaurant record won't be removed from db competely after the operation, just deactivated. This is the way to have all the voting history.
+  Only active restaurants can be voted.
   Restaurant can be activated using Restaurant Management API by 'ADMIN' user
+
   Url pattern: /api/v1/settings/restaurant/{restaurantId}
+
   Example: curl -XDELETE -H "Content-type: application/json" -u "admin:admin" http://localhost:8080/api/v1/settings/restaurant/1
 
 ### Menu management API
-  This part is available for 'ADMIN' role only. Use basic authentication to provide the credentials
+  This part is available for 'ADMIN' role only. Use basic authentication to provide the credentials.
   Initially there is one active restaurant id='1' with today's menu
 
 #### Read a menu for the restaurant and date
   Url pattern: api/v1/settings/restaurant/{restaurantId}/menu/{date in pattern YYYYMMDD}
+
   Example: curl -XGET -H "Content-type: application/json" -u "admin:admin" http://localhost:8080/api/v1/settings/restaurant/1/menu/20151217
 
 #### Create a menu for the restaurant and date
@@ -100,23 +111,28 @@ A standalone sevice that provides REST API for Restaurant Voting application. Se
 
 #### Update the menu
   Url pattern: api/v1/settings/restaurant/{restaurantId}/menu/{date in pattern YYYYMMDD}
+
   Example: curl -XPUT -H "Content-type: application/json" -u "admin:admin" -d "{\"name\":\"Vegitatian\", \"date\":[2015,12,17], \"items\":[{\"name\":\"Soup\", \"price\": 2.99}, {\"name\":\"Tea\", \"price\": 0.99}]}" http://localhost:8080/api/v1/settings/restaurant/1/menu/20151217
 
 #### Delete menu
   Url pattern: api/v1/settings/restaurant/{restaurantId}/menu/{date in pattern YYYYMMDD}
+
   Example: curl -XDELETE -H "Content-type: application/json" -u "admin:admin" http://localhost:8080/api/v1/settings/restaurant/1/menu/20151217
 
 ### Voting API
-  This part isn't require any authentication and is available for anyone
+  This part isn't require any authentication and is available for anyone.
   After startup the db contains one active restaurant with today's menu and id='1'. So, you are able test the API without any additional setups
 
 #### Get restaurants with it today's menu for voting
   Only restaurants that can be voted are returned. If restaurant isn't active or doesn't have a menu for today it won't be returned
+
   Example: curl -XGET -H "Content-type: application/json" http://localhost:8080/api/v1/vote/restaurants
 
 #### Vote for the restaurant
   If restaurant isn't active or doesn't have a menu for today it can be voted
+
   Url pattern: /api/v1/vote/restaurant/{restaurantId}
+
   Example: curl -XPOST -H "Content-type: application/json" http://localhost:8080/api/v1/vote/restaurant/1
 
 ## Technical overview
