@@ -137,7 +137,7 @@ A standalone sevice that provides REST API for Restaurant Voting application. Se
 
 ## Technical overview
   1. The cornerstone for this app is SpringBoot and related Spring technoloies like spring-mvc, spring-security, spring-data, etc.
-  2. hsqldb is used as a persistent storage. The db is created on startup if it wasn't created before in ./db/restaurantPickerDB folder. If something went wrong with the db you can just delete ./db folder and it will be restored after next startup
-     If the db is existed all the predefined records will be checked and changed if it is necessary during a startup
+  2. hsqldb is used as a persistent storage. The db is created on startup if it wasn't created before in ./db/restaurantPickerDB folder. If something went wrong with the db you can just delete ./db folder and it will be restored after next startup.
+     If the db is existed all the predefined records will be checked and changed, if it is necessary, during a startup
   3. Building tool is gradle because it requires minimal prerequisites to start
   4. Logs are located in ./logs folder. You can examine it in case of any errors
