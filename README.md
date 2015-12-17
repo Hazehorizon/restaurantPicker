@@ -7,40 +7,27 @@ A standalone sevice that provides REST API for Restaurant Voting application. Se
   1. Interner connection
   2. Java 8
 
-### Get soures
-  To ckeckout the sources from GitHub run the command:
+  Unfortunately everything has been tested on Windows host, if you want to run it on linux you need some adaptation for command line commands and curl commands escaping
 
+### Get soures
+  To checkout the sources from GitHub run the command:
   git clone https://github.com/Hazehorizon/restaurantPicker.git
+
+  You can also just download the sources archive from github
 
 ### Building java code & packaging
   To build the application, run
-
-  gradlew build       (Windows)
-
-    or
- 
-  ./gradlew build     (Linux)
+  gradlew build
 
 ### Start integration tests
   To start all the integration tests, run
-
-  gradlew integrationTest      (Windows)
-
-    or
-
-  ./gradlew integrationTests   (Linux)
+  gradlew integrationTest
 
 ### Run the appilcation
-  To build and run it from scrutch without integration tests starting, use command
-
-  gradlew bootRun     (Windows)
-
-    or
-
-  ./gradlew bootRun   (Linux)
+  To build and run it for a kick-off without integration tests starting, use command
+  gradlew bootRun
 
   If you have already built the sources with gradlew build command, just run
-
   java -jar build/libs/restaurantPicker-1.0.jar
 
   After startup the application listens to 8080 port for HTTP requests
@@ -48,7 +35,7 @@ A standalone sevice that provides REST API for Restaurant Voting application. Se
 ## API Overview
   Initially database is filled with testing data. There is one 'SYSTEM' role user ("system"/"system"), one 'ADMIN' user ("admin"/"admin").
   And one testing restaurant with today's menu and '1' id.
-  If you corrupt the database, e.g. remove all the users and can do nothing because of it just restart the application, all the predefined records will be restored during startup
+  If you corrupt the database, e.g. remove all the users and can do nothing because of it, just restart the application, all the predefined records will be restored during startup
 
 ### User management API
   This part is restricted for 'SYSTEM' role only. Use basic authentication to provide the credentials
@@ -59,14 +46,16 @@ A standalone sevice that provides REST API for Restaurant Voting application. Se
 
 #### Read the user info by it id
   Url pattern: /api/v1/system/user/{login}
+
   Example: curl -XGET -H "Content-type: application/json" -u "system:system" http://localhost:8080/api/v1/system/user/admin
 
 #### Create a new user
-  Example: curl -XPOST -H "Content-type: application/json" -u "system:system" -d '{"login":"new", "passwd":"new","active":true, "roles":["ADMIN"]}' http://localhost:8080/api/v1/system/user
+  Example: curl -XPOST -H "Content-type: application/json" -u "system:system" -d "{\"login\":\"new\", \"passwd\":\"new\",\"active\":true, \"roles\":[\"ADMIN\"]}" http://localhost:8080/api/v1/system/user
 
 #### Update an existed user
   Url pattern: /api/v1/system/user/{login}
-  Example: curl -XPUT -H "Content-type: application/json" -u "system:system" -d '{"login":"admin","passwd":"new","active":true, "roles":["SYSTEM","ADMIN"]}' http://localhost:8080/api/v1/system/user/admin
+
+  Example: curl -XPUT -H "Content-type: application/json" -u "system:system" -d "{\"login\":\"admin\",\"passwd\":\"new\",\"active\":true, \"roles\":[\"SYSTEM\",\"ADMIN\"]}" http://localhost:8080/api/v1/system/user/admin
 
 #### Delete user
   Url pattern: /api/v1/system/user/{login}
@@ -85,16 +74,16 @@ A standalone sevice that provides REST API for Restaurant Voting application. Se
   Example: curl -XGET -H "Content-type: application/json" -u "admin:admin" http://localhost:8080/api/v1/settings/restaurant/1
 
 #### Create a new restaurant
-  Example: curl -XPOST -H "Content-type: application/json" -u "admin:admin" -d '{"name":"TEST", "description":"DESC", "address": "Zoo", "phone":"2"}' http://localhost:8080/api/v1/settings/restaurant
+  Example: curl -XPOST -H "Content-type: application/json" -u "admin:admin" -d "{\"name\":\"TEST\", \"description\":\"DESC\", \"address\": \"Zoo\", \"phone\":\"2\"}" http://localhost:8080/api/v1/settings/restaurant
 
 #### Update an existed restaurant
   Url pattern: /api/v1/settings/restaurant/{restaurantId}
-  Example: curl -XPUT -H "Content-type: application/json" -u "admin:admin" -d '{"name":"TEST", "description":"DESC", "address": "Park ave.", "phone":"767-67-65"}' http://localhost:8080/api/v1/settings/restaurant/1
+  Example: curl -XPUT -H "Content-type: application/json" -u "admin:admin" -d "{\"name\":\"TEST\", \"description\":\"DESC\", \"address\": \"Park ave.\", \"phone\":\"767-67-65\"}" http://localhost:8080/api/v1/settings/restaurant/1
 
 #### Delete restaurant
-  The restaurant record won't be removed from db competely after the operation, just deactivated. This is the way to have all the performed votes history.
+  The restaurant record won't be removed from db competely after the operation, just deactivated. This is the way to have all the voting history
   Only active restaurants can be voted
-  Restaurant can be activated usin Restaurant management API by 'ADMIN' user
+  Restaurant can be activated using Restaurant Management API by 'ADMIN' user
   Url pattern: /api/v1/settings/restaurant/{restaurantId}
   Example: curl -XDELETE -H "Content-type: application/json" -u "admin:admin" http://localhost:8080/api/v1/settings/restaurant/1
 
@@ -104,18 +93,18 @@ A standalone sevice that provides REST API for Restaurant Voting application. Se
 
 #### Read a menu for the restaurant and date
   Url pattern: api/v1/settings/restaurant/{restaurantId}/menu/{date in pattern YYYYMMDD}
-  Example: curl -XGET -H "Content-type: application/json" http://localhost:8080/api/v1/settings/restaurant/1/menu/20151217
+  Example: curl -XGET -H "Content-type: application/json" -u "admin:admin" http://localhost:8080/api/v1/settings/restaurant/1/menu/20151217
 
 #### Create a menu for the restaurant and date
-  Example: curl -XPOST -H "Content-type: application/json" -d '{"name":"Vegitatian", "date":[2015,12,17], "items":[{"name":"Soup", "price": 2.99}, {"name":"Tea", "price": 9.99}]}' http://localhost:8080/api/v1/settings/restaurant/1/menu
+  Example: curl -XPOST -H "Content-type: application/json" -u "admin:admin" -d "{\"name\":\"Vegitatian\", \"date\":[2015,12,17], \"items\":[{\"name\":\"Soup\", \"price\": 2.99}, {\"name\":\"Tea\", \"price\": 9.99}]}" http://localhost:8080/api/v1/settings/restaurant/1/menu
 
 #### Update the menu
   Url pattern: api/v1/settings/restaurant/{restaurantId}/menu/{date in pattern YYYYMMDD}
-  Example: curl -XPUT -H "Content-type: application/json" -d '{"name":"Vegitatian", "date":[2015,12,17], "items":[{"name":"Soup", "price": 2.99}, {"name":"Tea", "price": 0.99}]}' http://localhost:8080/api/v1/settings/restaurant/1/menu
+  Example: curl -XPUT -H "Content-type: application/json" -u "admin:admin" -d "{\"name\":\"Vegitatian\", \"date\":[2015,12,17], \"items\":[{\"name\":\"Soup\", \"price\": 2.99}, {\"name\":\"Tea\", \"price\": 0.99}]}" http://localhost:8080/api/v1/settings/restaurant/1/menu/20151217
 
 #### Delete menu
   Url pattern: api/v1/settings/restaurant/{restaurantId}/menu/{date in pattern YYYYMMDD}
-  Example: curl -XDELETE -H "Content-type: application/json" http://localhost:8080/api/v1/settings/restaurant/1/menu/20151217
+  Example: curl -XDELETE -H "Content-type: application/json" -u "admin:admin" http://localhost:8080/api/v1/settings/restaurant/1/menu/20151217
 
 ### Voting API
   This part isn't require any authentication and is available for anyone
@@ -133,5 +122,6 @@ A standalone sevice that provides REST API for Restaurant Voting application. Se
 ## Technical overview
   1. The cornerstone for this app is SpringBoot and related Spring technoloies like spring-mvc, spring-security, spring-data, etc.
   2. hsqldb is used as a persistent storage. The db is created on startup if it wasn't created before in ./db/restaurantPickerDB folder. If something went wrong with the db you can just delete ./db folder and it will be restored after next startup
-     If the db is existed all the predefined records will be checked and changed if it is nessesary during startup
+     If the db is existed all the predefined records will be checked and changed if it is necessary during a startup
   3. Building tool is gradle because it requires minimal prerequisites to start
+  4. Logs are located in ./logs folder. You can examine it in case of any errors
