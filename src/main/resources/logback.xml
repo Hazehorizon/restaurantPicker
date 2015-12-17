@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+    <property name="logging.root" value="${CATALINA_HOME:-.}/logs" />
+
+    <appender name="MAIN" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logging.root}/restaurantPicker.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logging.root}/restaurantPicker.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>4</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date %level [%thread] %logger{0} [%X{context}] %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%date %level [%thread] %logger{0} %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="org.hazehorizon.restaurantPicker" level="DEBUG" additivity="false">
+        <appender-ref ref="MAIN"/>
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+</configuration>
